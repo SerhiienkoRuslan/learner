@@ -1,5 +1,3 @@
-Handles the event of clicking inside the wrapped component.
-
 ```jsx
 import { History } from "history";
 import { useCallback, useEffect, useState } from "react";
