@@ -72,7 +72,7 @@ var timeLimit = function(fn, t) {
 ```
 
 Time limit cache
-```
+```js
 var TimeLimitedCache = function() {
     this.cache = new Map(); // key -> { value, expireTime }
 };
