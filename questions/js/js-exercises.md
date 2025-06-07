@@ -138,3 +138,55 @@ TimeLimitedCache.prototype.count = function() {
  * timeLimitedCache.count() // 1
  */
 ```
+
+Debounce
+```js
+var debounce = function(fn, t) {
+    let timeoutId;
+
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            fn(...args);
+        }, t);
+    };
+};
+```
+
+Promise all
+```js
+var promiseAll = function(functions) {
+    return new Promise((resolve, reject) => {
+        const results = [];
+        let completed = 0;
+
+        if (functions.length === 0) {
+            resolve([]);
+            return;
+        }
+
+        functions.forEach((fn, index) => {
+            fn()
+                .then(result => {
+                    results[index] = result;
+                    completed++;
+                    if (completed === functions.length) {
+                        resolve(results);
+                    }
+                })
+                .catch(reject); // reject immediately if any promise fails
+        });
+    });
+};
+```
+
+Chunk
+```js
+var chunk = function(arr, size) {
+    const result = [];
+    for (let i = 0; i < arr.length; i += size) {
+        result.push(arr.slice(i, i + size));
+    }
+    return result;
+};
+```
