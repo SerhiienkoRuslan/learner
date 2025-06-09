@@ -205,3 +205,120 @@ Array.prototype.groupBy = function(fn) {
     }, {});
 };
 ```
+
+Sort by
+```js
+var sortBy = function(arr, fn) {
+    return arr.sort((a,b) => fn(a)-fn(b))
+};
+
+var sortBy = function(arr, fn) {
+    return arr.slice().sort((a, b) => {
+        const valA = fn(a);
+        const valB = fn(b);
+        return valA - valB;
+    });
+};
+```
+
+Join 2 arr
+```js
+var join = function(arr1, arr2) {
+    const map = new Map();
+
+    for (const item of arr1) {
+        map.set(item.id, { ...item });
+    }
+
+    for (const item of arr2) {
+        if (map.has(item.id)) {
+            const merged = { ...map.get(item.id), ...item };
+            map.set(item.id, { ...map.get(item.id), ...item });
+        } else {
+            map.set(item.id, { ...item });
+        }
+    }
+
+    return Array.from(map.values()).sort((a, b) => a.id - b.id);
+};
+```
+
+Flat arr
+```js
+var flat = function (arr, n) {
+    if (n === 0) return arr;
+
+    const result = [];
+
+    for (const el of arr) {
+        if (Array.isArray(el)) {
+            result.push(...flat(el, n - 1)); // recursively flatten
+        } else {
+            result.push(el);
+        }
+    }
+
+    return result;
+};
+```
+
+Input: obj = [null, 0, false, 1]
+Output: [1]
+Explanation: All falsy values have been removed from the array.
+Example 2:
+
+Input: obj = {"a": null, "b": [false, 1]}
+Output: {"b": [1]}
+Explanation: obj["a"] and obj["b"][0] had falsy values and were removed.
+Example 3:
+
+Input: obj = [null, 0, 5, [0], [false, 16]]
+Output: [5, [], [16]]
+Explanation: obj[0], obj[1], obj[3][0], and obj[4][0] were falsy and removed.
+```js
+/**
+ * @param {Object|Array} obj
+ * @return {Object|Array}
+ */
+var compactObject = function(obj) {
+    if (Array.isArray(obj)) {
+        return obj
+            .map(compactObject)
+            .filter(Boolean);
+    } else if (typeof obj === 'object' && obj !== null) {
+        const result = {};
+        for (const key in obj) {
+            const value = compactObject(obj[key]);
+            if (Boolean(value)) {
+                result[key] = value;
+            }
+        }
+        return result;
+    } else {
+        return obj;
+    }
+};
+```
+
+
+Remove duplicates
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function(nums) {
+    if (nums.length === 0) return 0;
+
+    let k = 1; // pointer for position of next unique element
+
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] !== nums[k - 1]) {
+            nums[k] = nums[i];
+            k++;
+        }
+    }
+
+    return k;
+};
+```
