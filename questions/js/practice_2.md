@@ -102,3 +102,100 @@ var longestCommonPrefix = function(strs) {
     return first.slice(0, i);
 };
 ```
+
+20. Valid Parentheses
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Every close bracket has a corresponding open bracket of the same type.
+
+Example 1:
+Input: s = "()
+Output: true
+
+Example 2:
+Input: s = "()[]{}"
+Output: true
+
+Example 3:
+Input: s = "(]"
+Output: false
+```js
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function(s) {
+    if (s.length % 2 !== 0) {
+        return false;
+    }
+
+    const mapp = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    }
+
+    if (!mapp[s[0]]) {
+        return false;
+    }
+
+    const temp = [];
+    let res = true;
+
+    for (let i = 0; i < s.length; i++) {
+        const currentEl = s[i];
+
+        if (mapp[currentEl]) {
+            temp.push(currentEl);
+        } else {
+            const prevValue = temp[temp.length - 1];
+            const isMatch = mapp[prevValue] === currentEl;
+
+            if (isMatch) {
+                temp.pop();
+            } else {
+                res = false;
+                break;
+            }
+        }
+    }
+
+    if (temp.length) {
+        res = false
+    }
+
+    return res;
+};
+```
+optz
+```js
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function(s) {
+    if (s.length % 2 !== 0) return false;
+
+    const map = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    };
+
+    const stack = [];
+
+    for (let i = 0; i < s.length; i++) {
+        const char = s[i];
+
+        if (map[char]) {
+            stack.push(map[char]); // Push expected closing bracket
+        } else {
+            if (stack.pop() !== char) return false;
+        }
+    }
+
+    return stack.length === 0;
+};
+```
+
+
